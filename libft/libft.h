@@ -6,14 +6,19 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 16:13:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2021/11/18 08:44:44 by psaulnie         ###   ########.fr       */
+/*   Updated: 2021/12/21 14:34:39 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
 # include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_list
 {
@@ -74,5 +79,14 @@ int				ft_isprint(int character);
 int				ft_toupper(int character);
 int				ft_tolower(int character);
 int				ft_memcmp(const void *first, const void *second, size_t length);
+
+/*	Get Next Line	*/
+
+char			*get_next_line(int fd);
+char			*gnl_strjoin(char *s1, char const *s2);
+char			*gnl_strndup(const char *src, char c);
+size_t			gnl_strlen(const char *str);
+char			*gnl_strchr(const char *str);
+char			*gnl_substr(char const *s, unsigned int start, int *len);
 
 #endif
