@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:33:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/13 11:15:15 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/15 16:49:16 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ void	destroy(t_data *data, int has_error, char *error_msg)
 	int	i;
 
 	i = 0;
-	error_msg = 0;
+	dup2(data->old_stdin, STDIN_FILENO);
+	close(data->old_stdin);
 	if (has_error)
-		write(data->fd.fd[1], "AAAA", 4);
+		printf("%s", error_msg);
 	// 	write(1, &error_msg, ft_strlen(error_msg));
 	if (data->path != 0)
 		free_tab(data->path);

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:05:56 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/13 11:01:08 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/15 16:51:50 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**get_path(t_data *data, char **envp)
 	return (splitted_path);
 }
 
-char	*get_file_path(t_data *data)
+char	*get_file_path(t_data *data, int cmd_num)
 {
 	char	*file_path;
 	char	*path;
@@ -44,13 +44,13 @@ char	*get_file_path(t_data *data)
 
 	i = 0;
 	path = ft_strjoin(data->path[i], "/");
-	file_path = ft_strjoin(path, data->command[0]);
+	file_path = ft_strjoin(path, data->commands[cmd_num][0]);
 	free(path);
 	while (data->path[i] && access(file_path, F_OK))
 	{
 		free(file_path);
 		path = ft_strjoin(data->path[i], "/");
-		file_path = ft_strjoin(path, data->command[0]);
+		file_path = ft_strjoin(path, data->commands[cmd_num][0]);
 		i++;
 	}
 	free(path);

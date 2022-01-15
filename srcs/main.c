@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/13 11:26:28 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/13 15:52:28 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_data	init(void)
 	data.command = 0;
 	data.command = 0;
 	data.final_path = 0;
+	data.old_stdin = dup(STDIN_FILENO);
 	return (data);
 }
 
