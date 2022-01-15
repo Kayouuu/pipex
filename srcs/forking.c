@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 09:44:25 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/15 16:47:38 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/15 17:26:24 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
 
-void	launch(int cmd_num, t_data *data, char **argv)
+void	launch(int cmd_num, t_data *data)
 {
 	int		i;
 
@@ -26,11 +26,11 @@ void	launch(int cmd_num, t_data *data, char **argv)
 		i++;
 	}
 	data->commands[i] = NULL;
-	forking(&*data, argv, cmd_num);
+	forking(&*data);
 	free(data->final_path);
 }
 
-void	forking(t_data *data, char **argv, int cmd_num)
+void	forking(t_data *data)
 {
 	int	i;
 
@@ -45,11 +45,9 @@ void	forking(t_data *data, char **argv, int cmd_num)
 		else if (data->fd.pid == 0)
 		{
 			if (i == 0)
-				dup2(open(argv[1], O_RDONLY), 0);
+				dup2(data->start, 0);
 			if (data->commands[i + 1] == NULL)
-			{
-				dup2(open(argv[cmd_num + 2], FLAGS, 0666), 1);
-			}
+				dup2(data->end, 1);
 			pipeline(&*data, i);
 		}
 		wait(NULL);

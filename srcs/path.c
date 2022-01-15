@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:05:56 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/15 16:51:50 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/15 17:20:16 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ char	*get_file_path(t_data *data, int cmd_num)
 	if (!access(file_path, F_OK))
 		return (file_path);
 	else
-		destroy(&*data, 1, "Error\nUNIX Command not found\n\0");
+		destroy(&*data, 1, "Error\nUNIX Command not found\n");
 	exit(1);
 }

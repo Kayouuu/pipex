@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 13:01:42 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/15 16:46:34 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/15 17:26:30 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 # include <fcntl.h>
 
 # include "../libft/libft.h"
-
-# define FLAGS O_RDWR | O_CREAT | O_TRUNC
 
 typedef struct s_fd
 {
@@ -37,12 +35,14 @@ typedef struct s_data
 	char	**command;
 	char	**path;
 	char	*final_path;
-	int		old_stdin;
+	int		old_stdout;
+	int		start;
+	int		end;
 }	t_data;
 
 /*	MAIN.C	*/
 
-void	error(int argc, char *argv[], int index);
+void	error(int argc, char *argv[]);
 
 /*	DESTROY.C	*/
 
@@ -50,8 +50,8 @@ void	destroy(t_data *data, int has_error, char *error_msg);
 
 /*	FORKING.C	*/
 
-void	launch(int cmd_num, t_data *data, char **argv);
-void	forking(t_data *data, char **argv, int cmd_num);
+void	launch(int cmd_num, t_data *data);
+void	forking(t_data *data);
 void	pipeline(t_data *data, int i);
 
 /*	PATH.C	*/

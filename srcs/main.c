@@ -6,27 +6,22 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/13 15:52:28 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/15 17:31:11 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
 
-void	error(int argc, char *argv[], int index)
+void	error(int argc, char *argv[])
 {
-	if (argc <= 4)
+	if (argc != 5)
 	{
 		write(1, "Not enough arguments\n", 21);
 		exit(0);
 	}
 	else if (access(argv[1], F_OK))
 	{
-		perror("File 1 not found");
-		exit (0);
-	}
-	else if (index == 0)
-	{
-		perror("File 2 not found");
+		write(1, "File 1 not found", 17);
 		exit (0);
 	}
 }
@@ -39,7 +34,9 @@ t_data	init(void)
 	data.command = 0;
 	data.command = 0;
 	data.final_path = 0;
-	data.old_stdin = dup(STDIN_FILENO);
+	data.old_stdout = dup(STDOUT_FILENO);
+	data.start = -1;
+	data.end = -1;
 	return (data);
 }
 
@@ -48,10 +45,7 @@ int	main(int argc, char *argv[], char **envp)
 	t_data	data;
 	int		i;
 
-	if (argc <= 4)
-		error(argc, argv, 0);
-	if (access(argv[1], F_OK))
-		error(argc, argv, 1);
+	error(argc, argv);
 	data = init();
 	data.command = malloc(sizeof(char *) * (argc - 3 + 2));
 	if (!data.command)
@@ -64,6 +58,9 @@ int	main(int argc, char *argv[], char **envp)
 	}
 	data.command[i - 2] = 0;
 	data.path = get_path(&data, envp);
-	launch(argc - 3, &data, argv);
+	data.end = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0666);
+	data.start = open(argv[1], O_RDONLY);
+	launch(argc - 3, &data);
+	destroy(&data, 0, 0);
 	return (0);
 }

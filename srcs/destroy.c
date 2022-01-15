@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:33:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/15 16:49:16 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/15 17:31:17 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ void	destroy(t_data *data, int has_error, char *error_msg)
 	int	i;
 
 	i = 0;
-	dup2(data->old_stdin, STDIN_FILENO);
-	close(data->old_stdin);
+	dup2(data->old_stdout, STDOUT_FILENO);
+	close(data->old_stdout);
 	if (has_error)
-		printf("%s", error_msg);
-	// 	write(1, &error_msg, ft_strlen(error_msg));
+		ft_putstr_fd(error_msg, 1);
 	if (data->path != 0)
 		free_tab(data->path);
 	if (data->command != 0)
@@ -46,7 +45,11 @@ void	destroy(t_data *data, int has_error, char *error_msg)
 			free_tab(data->commands[i]);
 			i++;
 		}
-		//free(data->commands);
+		free(data->commands);
 	}
+	if (data->start != -1)
+		close(data->start);
+	if (data->end != -1)
+		close(data->end);
 	exit(0);
 }
