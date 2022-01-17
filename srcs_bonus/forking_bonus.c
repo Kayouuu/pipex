@@ -6,71 +6,66 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 09:44:25 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/11 11:34:50 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/17 13:26:01 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex_bonus.h"
 
-void	launch(int cmd_num, char **command, char **path, char **argv)
+void	launch(int cmd_num, t_data *data)
 {
 	int		i;
-	char	***commands;
 
 	i = 0;
-	commands = malloc(sizeof(char **) * (cmd_num + 1));
-	if (!commands)
-	{
-		perror("malloc");
-		exit(1);
-	}
+	data->commands = malloc(sizeof(char **) * (cmd_num + 1));
+	if (!data->commands)
+		destroy(&*data, 1, "Error\nMalloc error\n");
 	while (i < cmd_num)
 	{
-		commands[i] = ft_split(command[i], ' ');
+		data->commands[i] = ft_split(data->command[i], ' ');
 		i++;
 	}
-	commands[i] = NULL;
-	forking(commands, path, argv, cmd_num);
+	data->commands[i] = NULL;
+	forking(&*data);
+	free(data->final_path);
 }
 
-void	forking(char ***cmd, char **path, char **argv, int cmdnb)
+void	forking(t_data *data)
 {
-	int		fd[2];
-	pid_t	pid;
-	int		fdd;
+	int	i;
 
-	fdd = 0;
-	while (*cmd != NULL)
+	i = 0;
+	data->fd.fdd = 0;
+	while ((data->commands[i]) != NULL)
 	{
-		pipe(fd);
-		pid = fork();
-		if (pid == -1)
+		pipe(data->fd.fd);
+		data->fd.pid = fork();
+		if (data->fd.pid == -1)
+			destroy(&*data, 1, "Error\nFork error\n\0");
+		else if (data->fd.pid == 0)
 		{
-			perror("fork");
-			exit(1);
-		}
-		else if (pid == 0)
-		{
-			if (*cmd == cmd[0])
-				dup2(open(argv[1], O_RDONLY), 0);
-			if (*(cmd + 1) == NULL)
-				dup2(open(argv[cmdnb + 2], O_RDWR | O_CREAT | O_TRUNC, 438), 1);
-			pipeline(fdd, fd, cmd, path);
+			if (i == 0)
+				dup2(data->start, 0);
+			if (data->commands[i + 1] == NULL)
+				dup2(data->end, 1);
+			pipeline(&*data, i);
 		}
 		wait(NULL);
-		close(fd[1]);
-		fdd = fd[0];
-		cmd++;
+		close(data->fd.fd[1]);
+		data->fd.fdd = data->fd.fd[0];
+		i++;
 	}
 }
 
-void	pipeline(int fdd, int *fd, char ***cmd, char **path)
+void	pipeline(t_data *data, int i)
 {
-	dup2(fdd, 0);
-	if (*(cmd + 1) != NULL)
-		dup2(fd[1], 1);
-	close(fd[0]);
-	execve(get_file_path(*cmd, path), &(*cmd)[0], path);
-	perror("execve failed");
-	exit(1);
+	dup2(data->fd.fdd, 0);
+	if (data->commands[i + 1] != NULL)
+		dup2(data->fd.fd[1], 1);
+	close(data->fd.fd[0]);
+	if (data->final_path != 0)
+		free(data->final_path);
+	data->final_path = get_file_path(&*data, i);
+	execve(data->final_path, &data->commands[i][0], data->path);
+	destroy(&*data, 1, "Error\nExecve failed\n\0");
 }

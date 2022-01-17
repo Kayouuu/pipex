@@ -6,7 +6,7 @@
 #    By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/06 13:55:52 by psaulnie          #+#    #+#              #
-#    Updated: 2022/01/15 16:56:16 by psaulnie         ###   ########.fr        #
+#    Updated: 2022/01/17 14:11:09 by psaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,10 +37,12 @@ fclean: clean
 
 re: fclean all
 
+bonus: ${NAME_BONUS}
+
 ${NAME_BONUS}: ${OBJS_BONUS} ${LIBFT_LIB} inc/pipex_bonus.h Makefile
 	${CC} ${CFLAGS} ${OBJS_BONUS} ${LIBFT_LIB} -o ${NAME_BONUS}
 
-${LIBFT_LIB}:
+${LIBFT_LIB}: libft/libft.a
 		make -C ${LIBFT}
 
 .PHONY:	all clean fclean re bonus
