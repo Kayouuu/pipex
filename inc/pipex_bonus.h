@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 13:01:42 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/17 14:20:40 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/19 10:28:13 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_data
 	char	***commands;
 	char	**command;
 	char	**path;
+	char	*limiter;
 	char	*final_path;
 	int		old_stdout;
 	int		start;
@@ -51,13 +52,18 @@ void	free_tab(char **tab);
 
 /*	FORKING_BONUS.C	*/
 
+void	process_wait(t_data *data);
 void	launch(int cmd_num, t_data *data);
 void	forking(t_data *data);
 void	pipeline(t_data *data, int i);
 
 /*	HERE_DOC_BONUS.C	*/
 
-void	here_doc(char *argv[], char **envp);
+int		forking_here_doc(t_data *data);
+void	pipeline_here_doc(t_data *data, int i);
+int		reading(int fd[2], t_data *data);
+void	here_doc_launch(t_data *data);
+void	here_doc(int argc, char *argv[], char **envp);
 
 /*	PATH_BONUS.C	*/
 

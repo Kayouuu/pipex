@@ -1,3 +1,6 @@
 .vscode/launch.json
+.vscode/tasks.json
 srcs/path.c
 a.out.dSYM/Contents/Info.plist
+outfile
+a.out.dSYM/Contents/Resources/DWARF/a.out

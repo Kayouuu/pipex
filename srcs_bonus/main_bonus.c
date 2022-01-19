@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/17 14:23:55 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/18 10:47:51 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	error(int argc, char *argv[])
 		write(1, "Not enough arguments\n", 21);
 		exit(0);
 	}
-	else if (access(argv[1], F_OK) && ft_memcmp("here_doc", argv[1], ft_strlen(argv[1])) != 0)
+	else if (access(argv[1], F_OK)
+		&& ft_memcmp("here_doc", argv[1], ft_strlen(argv[1])) != 0)
 	{
 		write(1, "File 1 not found", 17);
 		exit (0);
@@ -48,7 +49,7 @@ int	main(int argc, char *argv[], char **envp)
 	error(argc, argv);
 	data = init();
 	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-		here_doc(argv, envp);
+		here_doc(argc, argv, envp);
 	data.command = malloc(sizeof(char *) * (argc - 3 + 2));
 	if (!data.command)
 		destroy(&data, 1, "Error\nMalloc error\n\0");
@@ -60,6 +61,7 @@ int	main(int argc, char *argv[], char **envp)
 	}
 	data.command[i - 2] = 0;
 	data.path = get_path(&data, envp);
+	data.start = open(argv[1], O_RDONLY);
 	data.end = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0666);
 	launch(argc - 3, &data);
 	destroy(&data, 0, 0);

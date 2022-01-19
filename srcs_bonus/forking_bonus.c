@@ -6,11 +6,23 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 09:44:25 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/17 13:26:01 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/19 10:10:40 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex_bonus.h"
+
+void	process_wait(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while ((data->commands[i]) != NULL)
+	{
+		wait(NULL);
+		i++;
+	}
+}
 
 void	launch(int cmd_num, t_data *data)
 {
@@ -50,11 +62,11 @@ void	forking(t_data *data)
 				dup2(data->end, 1);
 			pipeline(&*data, i);
 		}
-		wait(NULL);
 		close(data->fd.fd[1]);
 		data->fd.fdd = data->fd.fd[0];
 		i++;
 	}
+	process_wait(&*data);
 }
 
 void	pipeline(t_data *data, int i)
