@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:51:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/19 12:07:59 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/21 10:25:39 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,59 +16,66 @@
 
 int	forking_here_doc(t_data *data)
 {
-	int		i;
+	char	*str;
+	char	*new_str;
+	int		pid;
 	int		fd[2];
-	pid_t	pid;
+	int		fdd;
 
-	i = 0;
-	data->fd.fdd = 0;
-	while ((data->commands[i]) != NULL)
+	new_str = 0;
+	str = 0;
+	write(1, "pipe here_doc>", 15);
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
 	{
-		pipe(data->fd.fd);
-		data->fd.pid = fork();
-		if (data->fd.pid == -1)
-			destroy(&*data, 1, "Error\nFork error\n\0");
-		else if (data->fd.pid == 0)
+		close(fd[0]);
+		while (1)
 		{
-			if (i == 0)
-			{
-				pipe(fd);
-				pid = fork();
-				if (pid == 0)
-					return (reading(fd, &*data));
-				else
-				{
-					wait(NULL);
-					dup2(fd[0], data->fd.fd[1]);
-					close(data->fd.fd[1]);
-				}
-				dup2(data->fd.fd[0], 0);
-			}
-			pipeline_here_doc(&*data, i);
+			str = get_next_line(0);
+			if (ft_strncmp("eof", str, 3) == 0)
+				break ;
+			new_str = gnl_strjoin(new_str, str);
+			if (str != NULL)
+				write(1, "pipe here_doc>", 15);
+			free(str);
 		}
-		wait(NULL);
-		close(data->fd.fd[1]);
-		data->fd.fdd = data->fd.fd[0];
-		i++;
+		free(str);
+		ft_putstr_fd(new_str, fd[1]);
+		free(new_str);
+		return (0);
 	}
-	process_wait(&*data);
-	return (1);
-}
-
-void	pipeline_here_doc(t_data *data, int i)
-{
-	dup2(data->fd.fdd, 0);
-	//if (data->commands[i + 1] != NULL)
-		dup2(data->fd.fd[1], 1);
-	//close(data->fd.fd[0]);
-	if (data->final_path != 0)
-		free(data->final_path);
-	data->final_path = get_file_path(&*data, i);
-	ft_putstr_fd("A", 2);
-	if (data->commands[i + 1] == NULL)
+	fdd = fd[0];
+	wait(NULL);
+	fd[0] = fdd;
+	dup2(fdd, 0);
+	close(fd[1]);
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		data->final_path = get_file_path(&*data, 0);
+		dup2(fd[1], 1);
+		execve(data->final_path, &data->commands[0][0], data->path);
+		ft_putstr_fd("nul a chier\n", 2);
+	}
+	wait(NULL);
+	close(fd[1]);
+	fdd = fd[0];
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		data->final_path = get_file_path(&*data, 1);
 		dup2(data->end, 1);
-	execve(data->final_path, &data->commands[i][0], data->path);
-	destroy(&*data, 1, "Error\nExecve failed\n\0");
+		dup2(fdd, 0);
+		close(fd[0]);
+		execve(data->final_path, &data->commands[1][0], data->path);
+		ft_putstr_fd("grosse merde\n", 2);
+	}
+	wait(NULL);
+	close(fd[1]);
+	return (0);
 }
 
 int	reading(int fd[2], t_data *data)
@@ -80,6 +87,7 @@ int	reading(int fd[2], t_data *data)
 	new_str = 0;
 	close(fd[0]);
 	data->start = fd[0];
+	pipe(fd);
 	write(1, "pipe here_doc> ", 16);
 	while (1)
 	{
@@ -92,6 +100,8 @@ int	reading(int fd[2], t_data *data)
 		free(str);
 	}
 	ft_putstr_fd(new_str, fd[1]);
+	free(str);
+	free(new_str);
 	return (0);
 }
 
@@ -110,8 +120,7 @@ void	here_doc_launch(t_data *data)
 	}
 	data->commands[i] = NULL;
 	forking_here_doc(&*data);
-	free(data->final_path);
-	free(data->final_path);
+	//free(data->final_path);
 }
 
 void	here_doc(int argc, char *argv[], char **envp)

@@ -6,11 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 09:44:25 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/19 10:10:40 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/20 12:16:41 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex_bonus.h"
+#include <sys/types.h>
+#include <sys/wait.h>
 
 void	process_wait(t_data *data)
 {
