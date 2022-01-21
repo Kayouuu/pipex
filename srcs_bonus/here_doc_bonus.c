@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:51:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/21 10:25:39 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/21 21:27:03 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@
 
 int	forking_here_doc(t_data *data)
 {
-	char	*str;
-	char	*new_str;
-	int		pid;
+	int		i;
 	int		fd[2];
 	int		fdd;
+	int		pid;
+	char	*str;
+	char	*new_str;
 
-	new_str = 0;
+	i = 0;
 	str = 0;
-	write(1, "pipe here_doc>", 15);
+	new_str = 0;
+	write(1, "pipe here_doc> ", 16);
 	pipe(fd);
 	pid = fork();
 	if (pid == 0)
@@ -37,7 +39,7 @@ int	forking_here_doc(t_data *data)
 				break ;
 			new_str = gnl_strjoin(new_str, str);
 			if (str != NULL)
-				write(1, "pipe here_doc>", 15);
+				write(1, "pipe here_doc> ", 16);
 			free(str);
 		}
 		free(str);
@@ -50,32 +52,40 @@ int	forking_here_doc(t_data *data)
 	fd[0] = fdd;
 	dup2(fdd, 0);
 	close(fd[1]);
-	pipe(fd);
-	pid = fork();
-	if (pid == 0)
-	{
-		data->final_path = get_file_path(&*data, 0);
-		dup2(fd[1], 1);
-		execve(data->final_path, &data->commands[0][0], data->path);
-		ft_putstr_fd("nul a chier\n", 2);
-	}
-	wait(NULL);
-	close(fd[1]);
 	fdd = fd[0];
-	pipe(fd);
-	pid = fork();
-	if (pid == 0)
+	while ((data->commands[i]) != NULL)
 	{
-		data->final_path = get_file_path(&*data, 1);
-		dup2(data->end, 1);
-		dup2(fdd, 0);
-		close(fd[0]);
-		execve(data->final_path, &data->commands[1][0], data->path);
-		ft_putstr_fd("grosse merde\n", 2);
+		pipe(fd);
+		pid = fork();
+		if (pid == -1)
+			destroy(&*data, 1, "Error\nFork error\n\0");
+		else if (pid == 0)
+		{
+			if (i == 0)
+				dup2(data->start, 0);
+			if (data->commands[i + 1] == NULL)
+				dup2(data->end, 1);
+			dup2(fdd, 0);
+			if (data->commands[i + 1] != NULL)
+				dup2(fd[1], 1);
+			close(fd[0]);
+			if (data->final_path != 0)
+				free(data->final_path);
+			data->final_path = get_file_path(&*data, i);
+			execve(data->final_path, &data->commands[i][0], data->path);
+			destroy(&*data, 1, "Error\nExecve failed\n\0");
+		}
+		close(fd[1]);
+		fdd = fd[0];
+		i++;
 	}
-	wait(NULL);
-	close(fd[1]);
-	return (0);
+	i = 0;
+	while ((data->commands[i]) != NULL)
+	{
+		wait(NULL);
+		i++;
+	}
+	exit(0);
 }
 
 int	reading(int fd[2], t_data *data)
@@ -120,7 +130,7 @@ void	here_doc_launch(t_data *data)
 	}
 	data->commands[i] = NULL;
 	forking_here_doc(&*data);
-	//free(data->final_path);
+	free(data->final_path);
 }
 
 void	here_doc(int argc, char *argv[], char **envp)
@@ -141,6 +151,6 @@ void	here_doc(int argc, char *argv[], char **envp)
 	data.end = open(argv[5], O_RDWR | O_CREAT | O_TRUNC, 0666);
 	data.path = get_path(&data, envp);
 	here_doc_launch(&data);
-	//destroy(&data, 0, 0);
+	destroy(&data, 0, 0);
 	exit (1);
 }
