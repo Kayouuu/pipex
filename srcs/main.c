@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/15 17:31:11 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/22 17:31:17 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_data	init(void)
 	data.path = 0;
 	data.command = 0;
 	data.command = 0;
-	data.final_path = 0;
+	data.final_path = NULL;
 	data.old_stdout = dup(STDOUT_FILENO);
 	data.start = -1;
 	data.end = -1;

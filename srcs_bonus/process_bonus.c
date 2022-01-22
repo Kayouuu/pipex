@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 11:31:32 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/22 11:33:22 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/22 17:38:53 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	forking_here_doc(t_data *data)
 	if (data->fd.pid == -1)
 		destroy(&*data, 1, "Error\nFork error\n\0");
 	if (data->fd.pid == 0)
-		return (reading(data->fd.fd));
+		return (reading(data->fd.fd, &*data));
 	data->fd.fdd = data->fd.fd[0];
 	wait(NULL);
 	data->fd.fd[0] = data->fd.fdd;
@@ -63,8 +63,9 @@ int	execute_here_doc(t_data *data, int i)
 	if (data->commands[i + 1] != NULL)
 		dup2(data->fd.fd[1], 1);
 	close(data->fd.fd[0]);
-	// if (data->final_path != 0)
+	// if (data->final_path != NULL)
 	// 	free(data->final_path);
+	data->final_path = 0;
 	data->final_path = get_file_path(&*data, i);
 	execve(data->final_path, &data->commands[i][0], data->path);
 	destroy(&*data, 1, "Error\nExecve failed\n\0");

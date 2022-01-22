@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 13:27:39 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/18 09:44:28 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/22 18:01:11 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,28 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
+void	free_all(t_data *data)
+{
+	if (data->path != 0)
+		free_tab(data->path);
+	if (data->command != 0)
+		free_tab(data->command);
+	if (data->end != -1)
+		close(data->end);
+	if (data->start != -1)
+		close(data->start);
+	if (data->limiter != 0)
+		free(data->limiter);
+}
+
 void	destroy(t_data *data, int has_error, char *error_msg)
 {
 	int	i;
 
 	i = 0;
-	dup2(data->old_stdout, STDOUT_FILENO);
-	close(data->old_stdout);
 	if (has_error)
-		ft_putstr_fd(error_msg, 1);
-	if (data->path != 0)
-		free_tab(data->path);
-	if (data->command != 0)
-		free_tab(data->command);
+		ft_putstr_fd(error_msg, 2);
+	free_all(&*data);
 	if (data->commands != 0)
 	{
 		while (data->commands[i] != 0)
@@ -47,7 +56,5 @@ void	destroy(t_data *data, int has_error, char *error_msg)
 		}
 		free(data->commands);
 	}
-	if (data->end != -1)
-		close(data->end);
 	exit(0);
 }

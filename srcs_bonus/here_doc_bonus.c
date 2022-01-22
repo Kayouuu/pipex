@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:51:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/22 11:38:45 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/22 17:55:39 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int	reading(int fd[2])
+int	reading(int fd[2], t_data *data)
 {
 	char	*str;
 	char	*new_str;
@@ -25,8 +25,10 @@ int	reading(int fd[2])
 	while (1)
 	{
 		str = get_next_line(0);
-		if (ft_strncmp("eof", str, 3) == 0)
+		if (ft_strncmp(data->limiter, str, ft_strlen(str)) == 0)
 			break ;
+		if (ft_strncmp("EOF", str, ft_strlen(str)) == 0)
+			destroy(&*data, 0, 0);
 		new_str = gnl_strjoin(new_str, str);
 		if (str != NULL)
 			write(1, "pipe here_doc> ", 16);
@@ -53,7 +55,6 @@ void	here_doc_launch(t_data *data, int cmd_nbr)
 	}
 	data->commands[i] = NULL;
 	forking_here_doc(&*data);
-	// free(data->final_path);
 }
 
 void	here_doc(int argc, char *argv[], char **envp)
@@ -76,11 +77,11 @@ void	here_doc(int argc, char *argv[], char **envp)
 		i++;
 	}
 	data.command[i - 2] = 0;
-	data.limiter = argv[2];
+	data.limiter = ft_strjoin(argv[2], "\n");
 	data.start = STDIN_FILENO;
 	data.end = open(argv[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
 	data.path = get_path(&data, envp);
 	here_doc_launch(&data, argc - 3);
-	// destroy(&data, 0, 0);
+	destroy(&data, 0, 0);
 	exit (1);
 }
