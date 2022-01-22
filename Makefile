@@ -6,7 +6,7 @@
 #    By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/06 13:55:52 by psaulnie          #+#    #+#              #
-#    Updated: 2022/01/18 10:42:59 by psaulnie         ###   ########.fr        #
+#    Updated: 2022/01/22 11:32:26 by psaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRCS = srcs/main.c srcs/path.c srcs/forking.c srcs/destroy.c
 OBJS = ${SRCS:.c=.o}
 SRCS_BONUS = srcs_bonus/main_bonus.c srcs_bonus/path_bonus.c \
 srcs_bonus/forking_bonus.c srcs_bonus/here_doc_bonus.c \
-srcs_bonus/destroy_bonus.c
+srcs_bonus/destroy_bonus.c srcs_bonus/process_bonus.c
 OBJS_BONUS = ${SRCS_BONUS:.c=.o}
 LIBFT = libft/
 LIBFT_LIB = libft/libft.a

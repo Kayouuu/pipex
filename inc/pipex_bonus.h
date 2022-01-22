@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 13:01:42 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/19 10:28:13 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/22 11:33:11 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,16 @@ void	launch(int cmd_num, t_data *data);
 void	forking(t_data *data);
 void	pipeline(t_data *data, int i);
 
-/*	HERE_DOC_BONUS.C	*/
+/*	PROCESS_BONUS.C	*/
 
 int		forking_here_doc(t_data *data);
-void	pipeline_here_doc(t_data *data, int i);
-int		reading(int fd[2], t_data *data);
-void	here_doc_launch(t_data *data);
+int		execute_here_doc(t_data *data, int i);
+int		process(t_data *data, int i);
+
+/*	HERE_DOC_BONUS.C	*/
+
+int		reading(int fd[2]);
+void	here_doc_launch(t_data *data, int cmd_nbr);
 void	here_doc(int argc, char *argv[], char **envp);
 
 /*	PATH_BONUS.C	*/
