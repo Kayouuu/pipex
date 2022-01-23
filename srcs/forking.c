@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 09:44:25 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/15 17:26:24 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/23 09:50:12 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	launch(int cmd_num, t_data *data)
 	while (i < cmd_num)
 	{
 		data->commands[i] = ft_split(data->command[i], ' ');
+		if (!data->commands[i])
+			destroy(&*data, 1, "Error\nMalloc error\n");
 		i++;
 	}
 	data->commands[i] = NULL;

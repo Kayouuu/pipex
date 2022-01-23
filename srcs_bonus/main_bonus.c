@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/22 17:49:13 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/23 10:18:15 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	main(int argc, char *argv[], char **envp)
 	while (argv[i] && access(argv[i], F_OK))
 	{
 		data.command[i - 2] = ft_strdup(argv[i]);
+		if (!data.command[i - 2])
+			destroy(&data, 1, "Error\nMalloc error\n");
 		i++;
 	}
 	data.command[i - 2] = 0;

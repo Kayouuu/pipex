@@ -6,13 +6,19 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:51:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/22 17:55:39 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/23 10:24:41 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex_bonus.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+
+static void	check(void	*str, t_data *data)
+{
+	if (!str)
+		destroy(&*data, 1, "Error\nMalloc error\n");
+}
 
 int	reading(int fd[2], t_data *data)
 {
@@ -30,6 +36,8 @@ int	reading(int fd[2], t_data *data)
 		if (ft_strncmp("EOF", str, ft_strlen(str)) == 0)
 			destroy(&*data, 0, 0);
 		new_str = gnl_strjoin(new_str, str);
+		if (!new_str)
+			destroy(&*data, 1, "Error\nMalloc error\n");
 		if (str != NULL)
 			write(1, "pipe here_doc> ", 16);
 		free(str);
@@ -63,21 +71,19 @@ void	here_doc(int argc, char *argv[], char **envp)
 	int		i;
 
 	if (argc <= 5)
-	{
-		ft_putstr_fd("Error\nWrong number of arguments\n", 1);
-		exit(-1);
-	}
+		destroy(&data, 1, "Error\nWrong number of arguments\n");
 	data.command = malloc(sizeof(char *) * (argc - 4 + 1));
-	if (!data.command)
-		destroy(&data, 1, "Error\nMalloc error\n\0");
+	check(data.command, &data);
 	i = 2;
 	while (argv[i + 2])
 	{
 		data.command[i - 2] = ft_strdup(argv[i +1]);
+		check(data.command[i - 2], &data);
 		i++;
 	}
 	data.command[i - 2] = 0;
 	data.limiter = ft_strjoin(argv[2], "\n");
+	check(data.limiter, &data);
 	data.start = STDIN_FILENO;
 	data.end = open(argv[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
 	data.path = get_path(&data, envp);

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 13:27:39 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/22 18:01:11 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/23 10:13:52 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	destroy(t_data *data, int has_error, char *error_msg)
 	free_all(&*data);
 	if (data->commands != 0)
 	{
-		while (data->commands[i] != 0)
+		while (data->commands[i])
 		{
 			free_tab(data->commands[i]);
 			i++;
