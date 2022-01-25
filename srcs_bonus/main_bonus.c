@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/25 09:41:05 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:02:10 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	main(int argc, char *argv[], char **envp)
 	data.command[i - 2] = 0;
 	data.path = get_path(&data, envp);
 	data.start = open(argv[1], O_RDONLY);
-	data.end = open(argv[i - 1], O_RDWR | O_CREAT | O_TRUNC, 0666);
+	data.end = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0666);
 	launch(argc - 3, &data);
 	destroy(&data, 0, 0);
 	return (0);
