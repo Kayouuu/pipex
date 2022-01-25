@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 11:31:32 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/23 10:03:21 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/25 09:44:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	forking_here_doc(t_data *data)
 	int		i;
 
 	i = 0;
-	write(1, "pipe here_doc> ", 16);
+	write(1, "pipe heredoc> ", 15);
 	if (pipe(data->fd.fd) == -1)
 		destroy(&*data, 1, "Error\nPipe error\n\0");
 	data->fd.pid = fork();

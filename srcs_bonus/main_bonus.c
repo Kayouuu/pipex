@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/23 10:18:15 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/25 09:41:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	error(int argc, char *argv[])
 {
 	if (argc < 5)
 	{
-		write(1, "Not enough arguments\n", 21);
+		ft_putstr_fd("Error\nNot enough arguments\n", 2);
 		exit(0);
 	}
 	else if (access(argv[1], F_OK)
 		&& ft_memcmp("here_doc", argv[1], ft_strlen(argv[1])) != 0)
 	{
-		write(1, "File 1 not found", 17);
+		ft_putstr_fd("Error\nFile 1 not found", 2);
 		exit (0);
 	}
 }
@@ -66,7 +66,7 @@ int	main(int argc, char *argv[], char **envp)
 	data.command[i - 2] = 0;
 	data.path = get_path(&data, envp);
 	data.start = open(argv[1], O_RDONLY);
-	data.end = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0666);
+	data.end = open(argv[i - 1], O_RDWR | O_CREAT | O_TRUNC, 0666);
 	launch(argc - 3, &data);
 	destroy(&data, 0, 0);
 	return (0);

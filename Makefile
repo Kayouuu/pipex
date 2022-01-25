@@ -6,7 +6,7 @@
 #    By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/06 13:55:52 by psaulnie          #+#    #+#              #
-#    Updated: 2022/01/22 17:58:08 by psaulnie         ###   ########.fr        #
+#    Updated: 2022/01/25 09:35:41 by psaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ srcs_bonus/destroy_bonus.c srcs_bonus/process_bonus.c
 OBJS_BONUS = ${SRCS_BONUS:.c=.o}
 LIBFT = libft/
 LIBFT_LIB = libft/libft.a
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror
 CC = gcc
 NAME = pipex
 NAME_BONUS = pipex_bonus

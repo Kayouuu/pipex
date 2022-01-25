@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:51:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/23 10:24:41 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/25 09:44:12 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	reading(int fd[2], t_data *data)
 		if (!new_str)
 			destroy(&*data, 1, "Error\nMalloc error\n");
 		if (str != NULL)
-			write(1, "pipe here_doc> ", 16);
+			write(1, "pipe heredoc> ", 15);
 		free(str);
 	}
 	free(str);
