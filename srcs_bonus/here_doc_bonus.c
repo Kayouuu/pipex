@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:51:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/26 09:47:30 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/26 14:07:16 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,18 @@ void	here_doc_launch(t_data *data, int cmd_nbr)
 		destroy(&*data, 1, "Error\nMalloc error\n");
 	while (i < cmd_nbr)
 	{
-		data->commands[i] = ft_split(data->command[i], ' ');
+		if (ft_strlen(data->command[i]) > 1)
+			data->commands[i] = ft_split(data->command[i], ' ');
+		else
+		{
+			data->commands[i] = malloc(sizeof(char *) * 2);
+			if (!data->commands[i])
+				destroy(&*data, 1, "Error\nMalloc error\n");
+			data->commands[i][0] = ft_strdup(data->command[i]);
+			data->commands[i][1] = NULL;
+		}
+		if (!data->commands[i])
+			destroy(&*data, 1, "Error\nMalloc error\n");
 		i++;
 	}
 	data->commands[i] = NULL;
@@ -86,6 +97,7 @@ void	here_doc(int argc, char *argv[], char **envp)
 	check(data.limiter, &data);
 	data.start = STDIN_FILENO;
 	data.end = open(argv[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	check_fd(&data);
 	data.path = get_path(&data, envp);
 	here_doc_launch(&data, argc - 3);
 	destroy(&data, 0, 0);

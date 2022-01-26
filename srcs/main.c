@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/26 10:19:49 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/26 13:42:59 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	error(int argc, char *argv[])
 
 static void	check(t_data *data)
 {
-	if (data->start == -1)
+	if (data->start == -1 || data->end == -1)
 	{
 		free_tab(data->command);
 		ft_putstr_fd("Error\nNo file permission\n", 2);
@@ -61,7 +61,7 @@ int	main(int argc, char *argv[], char **envp)
 	if (!data.command)
 		destroy(&data, 1, "Error\nMalloc error\n");
 	i = 2;
-	while (argv[i] && access(argv[i], F_OK))
+	while (argv[i + 1])
 	{
 		data.command[i - 2] = ft_strdup(argv[i]);
 		if (!data.command[i - 2])
@@ -71,8 +71,8 @@ int	main(int argc, char *argv[], char **envp)
 	data.command[i - 2] = 0;
 	data.path = get_path(&data, envp);
 	data.start = open(argv[1], O_RDONLY);
-	check(&data);
 	data.end = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0666);
+	check(&data);
 	launch(argc - 3, &data);
 	destroy(&data, 0, 0);
 	return (0);

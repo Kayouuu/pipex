@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 13:01:42 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/22 17:58:01 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/26 13:04:40 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_data
 
 /*	MAIN_BONUS.C	*/
 
+void	check_fd(t_data *data);
 void	error(int argc, char *argv[]);
 
 /*	DESTROY.C	*/
