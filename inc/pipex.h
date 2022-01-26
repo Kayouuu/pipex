@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 13:01:42 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/17 14:11:53 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/26 10:17:19 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	error(int argc, char *argv[]);
 
 /*	DESTROY.C	*/
 
+void	free_tab(char **tab);
 void	destroy(t_data *data, int has_error, char *error_msg);
 
 /*	FORKING.C	*/

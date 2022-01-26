@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/23 10:02:43 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/26 10:19:49 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,23 @@ void	error(int argc, char *argv[])
 {
 	if (argc != 5)
 	{
-		write(1, "Not enough arguments\n", 21);
+		ft_putstr_fd("Error\nWrong number of arguments\n", 2);
 		exit(0);
 	}
 	else if (access(argv[1], F_OK))
 	{
-		write(1, "File 1 not found", 17);
+		ft_putstr_fd("Error\nFile not found\n", 2);
 		exit (0);
+	}
+}
+
+static void	check(t_data *data)
+{
+	if (data->start == -1)
+	{
+		free_tab(data->command);
+		ft_putstr_fd("Error\nNo file permission\n", 2);
+		exit(-1);
 	}
 }
 
@@ -49,7 +59,7 @@ int	main(int argc, char *argv[], char **envp)
 	data = init();
 	data.command = malloc(sizeof(char *) * (argc - 3 + 2));
 	if (!data.command)
-		destroy(&data, 1, "Error\nMalloc error\n\0");
+		destroy(&data, 1, "Error\nMalloc error\n");
 	i = 2;
 	while (argv[i] && access(argv[i], F_OK))
 	{
@@ -60,8 +70,9 @@ int	main(int argc, char *argv[], char **envp)
 	}
 	data.command[i - 2] = 0;
 	data.path = get_path(&data, envp);
-	data.end = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0666);
 	data.start = open(argv[1], O_RDONLY);
+	check(&data);
+	data.end = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0666);
 	launch(argc - 3, &data);
 	destroy(&data, 0, 0);
 	return (0);

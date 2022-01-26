@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 10:28:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/25 12:02:10 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/26 10:26:51 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,17 @@ void	error(int argc, char *argv[])
 	}
 }
 
-t_data	init(void)
+static void	check(t_data *data)
+{
+	if (data->start == -1)
+	{
+		free_tab(data->command);
+		ft_putstr_fd("Error\nNo file permission\n", 2);
+		exit(-1);
+	}
+}
+
+t_data	init(int argc, char *argv[])
 {
 	t_data	data;
 
@@ -40,6 +50,7 @@ t_data	init(void)
 	data.old_stdout = dup(STDOUT_FILENO);
 	data.start = -1;
 	data.end = -1;
+	error(argc, argv);
 	return (data);
 }
 
@@ -48,8 +59,7 @@ int	main(int argc, char *argv[], char **envp)
 	t_data	data;
 	int		i;
 
-	error(argc, argv);
-	data = init();
+	data = init(argc, argv);
 	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
 		here_doc(argc, argv, envp);
 	data.command = malloc(sizeof(char *) * (argc - 3 + 2));
@@ -66,6 +76,7 @@ int	main(int argc, char *argv[], char **envp)
 	data.command[i - 2] = 0;
 	data.path = get_path(&data, envp);
 	data.start = open(argv[1], O_RDONLY);
+	check(&data);
 	data.end = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0666);
 	launch(argc - 3, &data);
 	destroy(&data, 0, 0);

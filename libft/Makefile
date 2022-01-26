@@ -6,7 +6,7 @@
 #    By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 11:30:57 by psaulnie          #+#    #+#              #
-#    Updated: 2022/01/08 15:06:06 by psaulnie         ###   ########.fr        #
+#    Updated: 2022/01/26 10:05:15 by psaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ CC = gcc
 NAME = libft.a
 
 %.o:	%.c libft.h Makefile
-		${CC} ${CFLAGS} -c $< -o $@
+		${CC} ${CFLAGS} -I libft.h -c $< -o $(<:.c=.o)
 
 ${NAME}:	${OBJS}
 			ar -rcs ${NAME} ${OBJS}

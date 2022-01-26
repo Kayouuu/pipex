@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:51:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/25 09:44:12 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/26 09:47:30 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	here_doc(int argc, char *argv[], char **envp)
 	data.limiter = ft_strjoin(argv[2], "\n");
 	check(data.limiter, &data);
 	data.start = STDIN_FILENO;
-	data.end = open(argv[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
+	data.end = open(argv[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	data.path = get_path(&data, envp);
 	here_doc_launch(&data, argc - 3);
 	destroy(&data, 0, 0);
