@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 13:27:39 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/26 09:47:37 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/27 10:21:56 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	destroy(t_data *data, int has_error, char *error_msg)
 	int	i;
 
 	i = 0;
-	waitpid(data->fd.pid, NULL, WUNTRACED);
 	if (has_error)
 		ft_putstr_fd(error_msg, 2);
 	free_all(&*data);

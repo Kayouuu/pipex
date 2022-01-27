@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 16:05:56 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/26 14:18:30 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/27 10:19:52 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**get_path(t_data *data, char **envp)
 
 	i = 0;
 	path = 0;
-	while (envp[i] != '\0')
+	while (envp[i] != NULL)
 	{
 		if (ft_strnstr(envp[i], "PATH=", 5))
 		{

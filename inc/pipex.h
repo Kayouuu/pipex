@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 13:01:42 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/26 10:17:19 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/27 10:20:19 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # include "../libft/libft.h"
 

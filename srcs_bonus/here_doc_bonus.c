@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:51:15 by psaulnie          #+#    #+#             */
-/*   Updated: 2022/01/26 14:07:16 by psaulnie         ###   ########.fr       */
+/*   Updated: 2022/01/27 10:24:33 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	here_doc_launch(t_data *data, int cmd_nbr)
 	data->commands = malloc(sizeof(char **) * (cmd_nbr + 1));
 	if (!data->commands)
 		destroy(&*data, 1, "Error\nMalloc error\n");
-	while (i < cmd_nbr)
+	while (i < cmd_nbr - 1)
 	{
 		if (ft_strlen(data->command[i]) > 1)
 			data->commands[i] = ft_split(data->command[i], ' ');
